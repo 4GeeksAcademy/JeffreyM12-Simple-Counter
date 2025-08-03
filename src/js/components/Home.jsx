@@ -1,27 +1,39 @@
-import React from "react";
+import React, { useEffect } from "react";
+import ReactDOM from "react-dom";
+import {useState} from "react"
 
-//include images into your bundle
-import rigoImage from "../../img/rigo-baby.jpg";
+import Counter from "./Counter";
+
 
 //create your first component
 const Home = () => {
-	return (
-		<div className="text-center">
-            
+	const [counter, setCounter] = useState(0);
 
-			<h1 className="text-center mt-5">Hello Rigo!</h1>
-			<p>
-				<img src={rigoImage} />
-			</p>
-			<a href="#" className="btn btn-success">
-				If you see this green button... bootstrap is working...
-			</a>
-			<p>
-				Made by{" "}
-				<a href="http://www.4geeksacademy.com">4Geeks Academy</a>, with
-				love!
-			</p>
-		</div>
+	// used to increase the counter by seconds
+	useEffect(() =>{
+		const interval = setInterval(() => {
+			setCounter(counter => counter + 1)
+		}, 1000)
+		console.log(counter)
+
+		return () => clearInterval(interval)
+	}, [counter])
+
+	// Function to calculate seconds in the timer counter
+	function calculateSeconds(aCounter, placeValue){
+		return Math.floor(aCounter/placeValue) % 10
+	}
+
+	return (
+		<>
+			<Counter 
+				tenthousandsDigit = {calculateSeconds(counter, 10000)}
+				thousandsDigit = {calculateSeconds(counter, 1000)}
+				hundredsDigit = {calculateSeconds(counter, 100)}
+				tensDigit = {calculateSeconds(counter, 10)}
+				onesDigit = {calculateSeconds(counter, 1)}
+			/>
+		</>
 	);
 };
 
